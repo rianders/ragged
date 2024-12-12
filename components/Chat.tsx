@@ -5,9 +5,9 @@ import { useUser } from '@clerk/nextjs'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useChat } from 'ai/react'
-import { trpc } from '@/lib/trpc/client';
+import { trpc } from '@/lib/trpc/client'
 
-export default function Chat() {
+export function Chat() {
   const { user } = useUser()
   const { messages, input, handleInputChange, handleSubmit } = useChat()
   const mutation = trpc.chatLog.create.useMutation()

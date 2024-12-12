@@ -1,28 +1,18 @@
-import { createTRPCNext } from '@trpc/next';
-import { httpBatchLink, loggerLink } from '@trpc/client';
+'use client';
+
+import { createTRPCReact } from '@trpc/react-query';
+import { httpBatchLink } from '@trpc/client';
 import superjson from 'superjson';
-import { inferRouterInputs, inferRouterOutputs } from '@trpc/server';
 import type { AppRouter } from '@/server/api/root';
 
-export const trpc = createTRPCNext<AppRouter>({
-  config() {
-    return {
-      transformer: superjson,
-      links: [
-        loggerLink({
-          enabled: (opts) =>
-            process.env.NODE_ENV === 'development' ||
-            (opts.direction === 'down' && opts.result instanceof Error),
-        }),
-        httpBatchLink({
-          url: `${process.env.NEXT_PUBLIC_APP_URL}/api/trpc`,
-        }),
-      ],
-    };
-  },
-  ssr: false,
-});
+export const trpc = createTRPCReact<AppRouter>();
 
-export type RouterInputs = inferRouterInputs<AppRouter>;
-export type RouterOutputs = inferRouterOutputs<AppRouter>;
+export const trpcClient = trpc.createClient({
+  links: [
+    httpBatchLink({
+      url: `${process.env.NEXT_PUBLIC_APP_URL}/api/trpc`,
+    }),
+  ],
+  transformer: superjson,
+});
 

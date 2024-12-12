@@ -8,7 +8,7 @@ generator client {
 }
 
 model RagConfig {
-  id             Int      @id @default(autoincrement())
+  id             Int    @id @default(autoincrement())
   llmProvider    String
   embeddingModel String
   websiteUrl     String
@@ -29,3 +29,4 @@ model UserPreference {
   userId String @unique
   theme  String @default("light")
 }
+
