@@ -1,0 +1,31 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model RagConfig {
+  id             Int      @id @default(autoincrement())
+  llmProvider    String
+  embeddingModel String
+  websiteUrl     String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model ChatLog {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  message   String
+  response  String
+  createdAt DateTime @default(now())
+}
+
+model UserPreference {
+  id     Int    @id @default(autoincrement())
+  userId String @unique
+  theme  String @default("light")
+}
